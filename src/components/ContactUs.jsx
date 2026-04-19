@@ -1,8 +1,33 @@
 import React from "react";
 import Ttitle from "./Ttitle";
 import assets from "../assets/assets";
+import toast from "react-hot-toast";
 
 const ContactUs = () => {
+  const onSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.target);
+
+    formData.append("access_key", "6d686eb2-96a3-446f-9399-2ddb51fc55e9");
+
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        toast.success("Thank you for your submission!");
+        event.target.reset();
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
   return (
     <div
       id="contact-us"
@@ -15,6 +40,7 @@ const ContactUs = () => {
       <form
         action=""
         className="grid sm:grid-cols-2 gap-3 sm:gap-5 max-w-2xl w-full"
+        onSubmit={onSubmit}
       >
         <div>
           <p className="mb-2 text-sm font-medium">Your Name</p>
@@ -22,6 +48,7 @@ const ContactUs = () => {
             <img src={assets.person_icon} alt="" />
             <input
               type="text"
+              name="name"
               placeholder="Enter your name"
               className="w-full p-3 text-sm outline-none"
               required
@@ -35,6 +62,7 @@ const ContactUs = () => {
             <img src={assets.email_icon} alt="" />
             <input
               type="email"
+              name="email"
               placeholder="Enter your email"
               className="w-full p-3 text-sm outline-none"
               required
@@ -45,8 +73,10 @@ const ContactUs = () => {
           <p className="mb-2 text-sm font-medium">Message</p>
           <textarea
             rows={8}
+            name="message"
             placeholder="Your Message"
             className="w-full p-3 text-sm outline-none rounded-lg border border-r-gray-300 dark:border-r-gray-600"
+            required
           />
         </div>
 
