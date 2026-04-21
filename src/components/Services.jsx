@@ -2,6 +2,7 @@ import React from "react";
 import assets from "../assets/assets";
 import Ttitle from "./Ttitle";
 import ServiceCard from "./ServiceCard";
+import { motion } from "motion/react";
 
 const Services = () => {
   const servicesData = [
@@ -31,7 +32,11 @@ const Services = () => {
   ];
 
   return (
-    <div
+    <motion.div
+      initial="hidden"
+      whileInView="visible"
+      transition={{ staggerChildren: 0.2 }}
+      viewport={{ once: true }}
       id="services"
       className="relative flex flex-col items-center gap-7 px-4 sm:px-12 lg:px-40 pt-30 text-gray-700 dark:text-white"
     >
@@ -45,11 +50,11 @@ const Services = () => {
         desc="From strategy to execution, we craft digital solutions that move your business forward."
       />
       <div className="flex flex-col md:grid grid-cols-2">
-        {servicesData.map((service, index)=>(
-            <ServiceCard service={service} index={index} key={index}/>
+        {servicesData.map((service, index) => (
+          <ServiceCard service={service} index={index} key={index} />
         ))}
       </div>
-    </div>
+    </motion.div>
   );
 };
 
